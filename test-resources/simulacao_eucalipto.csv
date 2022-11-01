@@ -1,0 +1,35 @@
+Área do povoamento:,1.0 ha,
+Custos administrativos e processuais/Ha:,10.0 Euros,
+Produtividade Esperada:,Def. Utilizador:80.0 m3/10 anos,
+Taxa de desconto:,   3.5 %,
+Valor da Madeira em pé:,  30.00 ¤,
+Valor Actual Final Liquido:,     47.83 Euros,
+Taxa Interna de Rendibilidade (TIR):,   3.50 %,
+,
+Ano,Rot,Vol total (m3.Ha),Vol por Ha (m3),AMA por Ha (m3/ano),Operação,Custo (Val. corr.),Custo (Val. act),Rendimento (Val. act.),Val. Acum. Liq. (Val act.),Rendimento (Val. corr.)
+0, 1,    0.0,    0.0,    0.0, Instalação e Sacha e Amontoa,  1485.0,  1485.0,     0.0, -1485.0,0.0
+1, 1,    0.0,    0.0,    0.0, Controlo Vegetação - Corta matos mecanizado e Adubação Manual,   250.0,   241.5,     0.0, -1726.5,0.0
+2, 1,    0.7,    0.7,    0.4, ,    10.0,     9.3,     0.0, -1735.9,0.0
+3, 1,    5.0,    5.0,    1.7, Controlo Vegetação - Corta matos mecanizado e Adubação Manual,   250.0,   225.5,     0.0, -1961.4,0.0
+4, 1,   12.2,   12.2,    3.1, Pragas/Doenças (Gonipterus ou Phorocantha),    62.5,    54.5,     0.0, -2015.8,0.0
+5, 1,   21.6,   21.6,    4.3, Caminhos e aceiros - Conservação e Controlo Vegetação - Corta matos mecanizado,   120.0,   101.0,     0.0, -2116.9,0.0
+6, 1,   32.3,   32.3,    5.4, Controlo Vegetação - Corta matos mecanizado,   110.0,    89.5,     0.0, -2206.4,0.0
+7, 1,   43.7,   43.7,    6.2, Pragas/Doenças (Gonipterus ou Phorocantha),    62.5,    49.1,     0.0, -2255.5,0.0
+8, 1,   55.6,   55.6,    7.0, ,    10.0,     7.6,     0.0, -2263.1,0.0
+9, 1,   67.8,   67.8,    7.5, ,    10.0,     7.3,     0.0, -2270.4,0.0
+10, 2,   80.0,   80.0,    8.0, Corte Talhadia,    10.0,     7.1,  1701.4,  -576.1,2400.0
+11, 2,    0.0,    0.0,    0.0, ,    10.0,     6.8,     0.0,  -582.9,0.0
+12, 2,    0.0,    0.0,    0.0, Controlo Vegetação - Corta matos mecanizado e Adubação Manual,   250.0,   165.4,     0.0,  -748.4,0.0
+13, 2,    2.9,    2.9,    1.5, Selecção de Varas (1a),    85.0,    54.3,     0.0,  -802.7,0.0
+14, 2,    9.3,    9.3,    3.1,  e Adubação Manual,   150.0,    92.7,     0.0,  -895.4,0.0
+15, 2,   18.0,   18.0,    4.5, Controlo Vegetação - Corta matos mecanizado e Selecção de Varas (2a),   157.0,    93.7,     0.0,  -989.1,0.0
+16, 2,   28.0,   28.0,    5.6, Caminhos e aceiros - Conservação,    20.0,    11.5,     0.0, -1000.7,0.0
+17, 2,   38.8,   38.8,    6.5, Pragas/Doenças (Gonipterus ou Phorocantha),    62.5,    34.8,     0.0, -1035.5,0.0
+18, 2,   49.9,   49.9,    7.1, ,    10.0,     5.4,     0.0, -1040.9,0.0
+19, 2,   61.4,   61.4,    7.7, ,    10.0,     5.2,     0.0, -1046.1,0.0
+20, 2,   72.9,   72.9,    8.1, Corte Final,    10.0,     5.0,  1098.9,    47.8,2187.0
+,
+O conteúdo deste simulador é meramente informativo, sendo a análise do investimento em acções de florestação com eucalipto baseada em valores médios, não tomando em conta todas as variáveis, quer de mercado quer de que depende o efectivo crescimento do eucalipto, razões pela qual a realidade será necessariamente diversa daquela que seja aqui computada,
+Em caso algum, a CELPA e a Faculdade de Ciências da Universidade de Lisboa serão responsáveis perante o utilizador ou terceiros pelas decisões ou acções adoptadas por estes com base na informação veiculada pelo simulador.,
+A CELPA e a Faculdade de Ciências da Universidade de Lisboa excluem a sua responsabilidade por quaisquer danos que possam ocorrer relacionados com a informação contida neste simulador, nomeadamente por erros ou imprecisões de utilização.,
+,

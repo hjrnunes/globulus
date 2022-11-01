@@ -1,0 +1,29 @@
+{:paths   ["src" "resources"]
+
+ :deps    {org.clojure/clojure            {:mvn/version "1.11.1"}
+           scicloj/tablecloth             {:mvn/version "6.103"}
+           io.github.nextjournal/clerk    {:mvn/version "0.11.603"}
+           io.github.behrica/casagemas    {:git/sha "0412155bc73b3ba168d84db1e66867b87d155c6d"}
+           org.clojure/math.combinatorics {:mvn/version "0.1.6"}
+           ;clojurewerkz/money  {:mvn/version "1.10.0"}
+           }
+
+ :aliases {:run-m {:main-opts ["-m" "globulus.globulus"]}
+
+           :run-x {:ns-default globulus.globulus
+                   :exec-fn    greet
+                   :exec-args  {:name "Clojure"}}
+
+           :build {:deps       {io.github.seancorfield/build-clj
+                                {:git/tag   "v0.6.3" :git/sha "9b8e09b"
+                                 ;; since we're building an app uberjar, we do not
+                                 ;; need deps-deploy for clojars.org deployment:
+                                 :deps/root "slim"}}
+                   :ns-default build}
+
+           :dev   {:extra-paths ["dev-src"]}
+
+           :test  {:extra-paths ["test" "test-resources"]
+                   :extra-deps  {org.clojure/test.check {:mvn/version "1.1.1"}
+                                 io.github.cognitect-labs/test-runner
+                                 {:git/tag "v0.5.0" :git/sha "48c3c67"}}}}}
