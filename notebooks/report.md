@@ -5,18 +5,18 @@
 Na última década os preços de madeira para polpa (MP) diminuíram aprox. 20%, em parte devido ao rápido aumento das zonas
 de plantações para produção de MD em países como a Austrália, Chile e Uruguai.
 
-A procura mundial de madeira, distribui-se por necessidades energéticas, lenha e carvão vegetal (mais de 50%), madeira
+A procura mundial de madeira, distribui-se por necessidades energéticas, lenha e carvão vegetal (mais de metade), madeira
 de serração, postes e vigas de construção (20%) e a dedicada à indústria da celulose e papel (27%).
 
 *Eucalyptus globulus* é uma das espécies do género *Eucalyptus* mais conhecidas no mundo. É a espécie representativa do
 género em países como EUA, Espanha, Portugal, etc.
 
-Em Portugal, quase 15% das terras estão platadas com esta espécie. A maioria dos eucaliptais encontram-se em solos
+Em Portugal, quase 15% das terras estão platadas com esta espécie. A maioria dos eucaliptais encontra-se em solos
 provenientes de arenito ou calcário, gravemente degradados pelo cultivo desde há muitos séculos. Os melhores rendimentos
 tiram-se de margas argilosas ou argilas finas.
 
 A espécie desenvolve-se sobre um amplo conjunto de substractos, mas especialmente em solos derivados de rocha granítica
-e granodiorítica. Não suporta solo calcários que apresentem pH alto (>7,5) e cálcio livre, e toleram medianamente a
+e granodiorítica. Não suporta solos calcários que apresentem pH alto (>7,5) e cálcio livre, e toleram medianamente a
 salinidade.
 
 A maioria das empresas florestais têm estabelecido plantações com rotações curtas (entre 7 e 12 anos), não requerendo
@@ -35,10 +35,10 @@ A *E. globolus* pode produzir troncos de alto valor para a produção de madeira
 maior valor para a a utilização na indústria do móvel.
 
 Os troncos classificam-se, segundo o uso principal e diâmetro, em *grossos ou delgados*. A madeira grossa destina-se
-principalmente para o fabrico de móveis. O valor unitário deste tipo de madeira é sempre superior ao da madeira delgada.
+principalmente para o fabrico de móveis. O valor unitário desta madeira é sempre superior ao da madeira delgada.
 Quanto maior o diâmetro e a qualidade, melhor o preço.
 
-A madeira delgada, também chamada *polpável*, provém principalmente dos *thinnings* comercias, da colheita de plantações
+A madeira delgada, também chamada *polpável*, provém principalmente dos *thinnings* comerciais, da colheita de plantações
 jóvens de rápido crescimento, de bosques sem tratamentos e da parte superior das árvores provenientes de colheitas em
 bosques maiores. O seu consumo maioritário destina-se à produção de celulose (fábricas locais de celulose, pastilhas ou
 chips, ou exportação). Pode empregar-se até quase 100% do volume de um bosque para este propósito.
@@ -52,27 +52,27 @@ de preços que a madeira para polpa.
 **Num estudo sobre a cadeia de abastecimento de madeira no Canadá determinou-se que o factor que mais influi sobre a
 rentabilidade das empresas florestais corresponde à acessibilidade, principalmente as deslocações por estradas.**
 
-A fertilização é altamente rentável em plantações florestais de rápido crescimento, uma vez que o curto período de
+A fertilização é altamente rentável em plantações florestais de rápido crescimento, já que o curto período de
 retorno do investimento compensa o custo alto dos fertilizantes.
 
 Nos climas mediterrâneos, a água é o factor mais importante que controla a produtividade dos eucaliptos, e as secas são
 um importante factor de limitação do crescimento destas espécies.
 
-Em sítios de baixa produtividade recomenda-se um espaçamento inicial de 4 x 2,5m, densidades da ordem das 1000 árv./ha
+Em sítios de baixa produtividade recomenda-se um espaçamento inicial de 4 x 2,5 m, densidades da ordem das 1000 árv./ha
 
-Em sítios de alta produtividade, aconselha-se um espaçamento inical de 3 x 2m, densidades de 1600 árv./ha
+Em sítios de alta produtividade, aconselha-se um espaçamento inical de 3 x 2 m, densidades de 1600 árv./ha
 
 Em Portugal, plantam-se 1300 árv./ha (4 x 1,9m) de *E. globolus* nas zonas mais secas ao sul, e ao norte 1600 árv./ha (3
 x 2m)
 
-A maior parte dos estudos concluem que deve manter-se o controlo da vegetação competidora até ao cerramento das copas,
+A maioria dos estudos conclui que deve manter-se o controlo da vegetação competidora até ao cerramento das copas,
 que ocorre geralmente entre os 2 e os 4 anos.
 
 As plantações de rápido crescimento são fortemente condicionadas nas suas rotações curtas pela disponibilidade de
 nutrientes.
 
 *Lei de Mitscherlich: a cada incremento do factor limitador ou elemento nutritivo em menor quantidade, correspondem
-incrementos de rendimentos entre as colheitas cada vez mais pequenos até se atingir o rendimento nulo.*
+incrementos de rendimentos entre as colheitas decrescentes até se atingir o rendimento nulo.*
 
 Em Portugal provou-se que o tratamento com rega resultou em incrementos de biomassa de 91% e 85% aos 11 e 23 meses,
 respectivamente.
@@ -143,7 +143,7 @@ Para prosseguir, é necessário levantar esta informação para o mercado portug
 
 ### Custos
 
-#### Re-arborização
+#### Rearborização
 
 - Preparação do terreno à cava (ilegal, mas muito utilizado no minifúndio): 1 600€ a 2 100€/hectare
 - Destroça cepos com Enxó + ripagem (2D) + gradagem + subsolagem (na linha da plantação): 1 200€ a 1 500€/hectare

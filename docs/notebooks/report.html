@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html class="overflow-hidden min-h-screen"><head><title>Eucalipto</title><meta charset="UTF-8"><meta content="width=device-width, initial-scale=1" name="viewport"><script src="https://cdn.tailwindcss.com?plugins=typography" type="text/javascript"></script><script>tailwind.config = {
+  darkMode: "class",
+  content: ["./public/build/index.html", "./public/build/**/*.html", "./build/viewer.js"],
+  safelist: ['dark'],
+  theme: {
+    extend: {},
+    fontFamily: {
+      sans: ["Fira Sans", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
+      serif: ["PT Serif", "serif"],
+      mono: ["Fira Mono", "monospace"]
+    }
+  },
+  variants: {
+    extend: {},
+  },
+  plugins: [],
+}
+</script><style type="text/tailwindcss">@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-size: 18px;
+  }
+  @media (max-width: 600px) {
+    html {
+      font-size: 16px;
+    }
+  }
+  .font-condensed { font-family: "Fira Sans Condensed", sans-serif; }
+  .font-inter     { font-family: "Inter", sans-serif; }
+  body {
+    @apply font-serif antialiased text-gray-900 sm:overscroll-y-none;
+  }
+  code, .code {
+    @apply font-mono text-sm text-gray-900 bg-slate-50 px-0.5 py-px rounded dark:bg-gray-800;
+  }
+  code::before, code::after { @apply content-none !important; }
+  h1, h3, h4, h5, h6 {
+    @apply font-condensed font-bold mt-8 first:mt-0;
+  }
+  h2 {
+    /*We cannot collapse margins due to nesting but we want to*/
+    /*keep the h2’s large margin visible*/
+    @apply font-condensed font-bold mt-8 first:mt-2;
+  }
+  h1 { @apply text-4xl; }
+  h2 { @apply text-3xl; }
+  h3 { @apply text-2xl; }
+
+  button { @apply focus:outline-none; }
+  strong { @apply font-bold; }
+  em     { @apply italic; }
+  pre    { @apply m-0 font-mono; }
+}
+
+/* Compatibility */
+/* --------------------------------------------------------------- */
+/* TODO: Verify which colors are in use and replace with Tailwind
+   colors accordingly. Move Nj-specific styles out of here. */
+
+:root {
+  --teal-color: #31afd0;
+  --dark-teal-color: #095960;
+  --near-black-color: #2e2e2c;
+  --red-color: #d64242;
+  --dark-blue-color: #1f2937;
+  --dark-blue-60-color: rgba(28, 42, 56, 0.6);
+  --gray-panel-color: rgba(239, 241, 245, 1.000);
+  --brand-color: var(--dark-blue-color);
+  --link-color: #5046e4;
+  --command-bar-selected-color: var(--teal-color);
+}
+
+.serif      { @apply font-serif; }
+.sans-serif { @apply font-sans; }
+.monospace  { @apply font-mono; }
+.inter      { @apply font-inter; }
+
+.border-color-teal { border-color: var(--dark-teal-color); }
+.teal { color: var(--teal-color); }
+.bg-dark-blue { background: var(--dark-blue-color); }
+.bg-dark-blue-60 { background: rgba(28, 42, 56, 0.6); }
+.bg-gray-panel { background: var(--gray-panel-color); }
+.text-dark-blue  { color: var(--dark-blue-color); }
+.text-dark-blue-60 { color: var(--dark-blue-60-color); }
+.border-dark-blue-30 { border-color: rgba(28, 42, 56, 0.6); }
+.text-brand { color: var(--dark-blue-color); }
+.bg-brand { background: var(--dark-blue-color); }
+.text-selected { color: white; }
+.red { color: var(--red-color); }
+
+/* Disclose Button */
+/* --------------------------------------------------------------- */
+
+.disclose {
+  @apply content-none border-solid cursor-pointer inline-block relative mr-[3px] top-[-2px] transition-all;
+  border-color: var(--near-black-color) transparent;
+  border-width: 6px 4px 0;
+}
+.disclose:hover {
+  border-color: var(--near-black-color) transparent;
+}
+.dark .disclose,
+.dark .disclose:hover {
+  border-color: white transparent;
+}
+.disclose.collapsed {
+  @apply rotate-[-90deg];
+}
+
+/* Layout */
+/* --------------------------------------------------------------- */
+
+.page {
+  @apply max-w-5xl mx-auto px-12 box-border flex-shrink-0;
+}
+.max-w-prose { @apply max-w-[46rem] !important; }
+.max-w-wide  { @apply max-w-3xl !important; }
+
+/* List Styles */
+/* --------------------------------------------------------------- */
+
+.task-list-item + .task-list-item,
+.viewer-markdown ul ul {
+  @apply mt-1 mb-0;
+}
+
+/* compact TOC */
+.viewer-markdown .toc ul {
+  list-style: none;
+  @apply my-1;
+}
+
+/* Code Viewer */
+/* --------------------------------------------------------------- */
+
+.viewer-code {
+  @apply font-mono bg-slate-100 rounded-sm text-sm overflow-x-auto dark:bg-gray-800;
+}
+.viewer-code .cm-content {
+  @apply py-4 px-8;
+}
+@media (min-width: 960px){
+  .viewer-notebook .viewer-code .cm-content {
+    @apply py-4 pl-12;
+  }
+}
+/* Don’t show focus outline when double-clicking cell in Safari */
+.cm-scroller { @apply focus:outline-none; }
+
+/* Syntax Highlighting */
+/* --------------------------------------------------------------- */
+
+.inspected-value { @apply text-xs font-mono leading-[1.25rem]; }
+.cmt-strong, .cmt-heading { @apply font-bold; }
+.cmt-italic, .cmt-emphasis { @apply italic; }
+.cmt-strikethrough { @apply line-through; }
+.cmt-link { @apply underline; }
+.untyped-value { @apply whitespace-nowrap; }
+
+.cm-editor, .cmt-default, .viewer-result {
+  @apply text-slate-800 dark:text-slate-300;
+}
+.cmt-keyword {
+  @apply text-purple-800 dark:text-pink-400;
+}
+.cmt-atom, .cmt-bool, .cmt-url, .cmt-contentSeparator, .cmt-labelName {
+  @apply text-blue-900 dark:text-blue-300;
+}
+.cmt-inserted, .cmt-literal {
+  @apply text-emerald-700 dark:text-emerald-200;
+}
+.cmt-string, .cmt-deleted {
+  @apply text-rose-700 dark:text-sky-300;
+}
+.cmt-italic.cmt-string {
+  @apply dark:text-sky-200;
+}
+.cmt-regexp, .cmt-escape {
+  @apply text-orange-500 dark:text-orange-300;
+}
+.cmt-variableName {
+  @apply text-blue-800 dark:text-sky-300;
+}
+.cmt-typeName, .cmt-namespace {
+  @apply text-emerald-600 dark:text-emerald-300;
+}
+.cmt-className {
+  @apply text-teal-600 dark:text-teal-200;
+}
+.cmt-macroName {
+  @apply text-teal-700 dark:text-teal-200;
+}
+.cmt-propertyName {
+  @apply text-blue-700 dark:text-blue-200;
+}
+.cmt-comment {
+  @apply text-slate-500 dark:text-slate-400;
+}
+.cmt-meta {
+  @apply text-slate-600 dark:text-slate-400;
+}
+.cmt-invalid {
+  @apply text-red-500 dark:text-red-300;
+}
+
+.result-data {
+  @apply font-mono text-sm overflow-x-auto whitespace-nowrap leading-normal;
+}
+.result-data::-webkit-scrollbar, .path-nav::-webkit-scrollbar {
+  @apply h-0;
+}
+.result-data-collapsed {
+  @apply whitespace-nowrap;
+}
+.result-data-field {
+  @apply ml-4 whitespace-nowrap;
+}
+.result-data-field-link{
+  @apply ml-4 whitespace-nowrap cursor-pointer;
+}
+.result-data-field-link:hover {
+  @apply text-black bg-black/5;
+}
+.result-text-empty {
+  color: rgba(0,0,0,.3);
+}
+.browsify-button:hover {
+  box-shadow: -2px 0 0 2px #edf2f7;
+}
+
+/* Prose */
+/* --------------------------------------------------------------- */
+
+.viewer-notebook,
+.viewer-markdown {
+  @apply prose
+    dark:prose-invert
+    prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline
+    dark:prose-a:text-blue-300
+    prose-p:mt-4 prose-p:leading-snug
+    prose-ol:mt-4 prose-ol:mb-6 prose-ol:leading-snug
+    prose-ul:mt-4 prose-ul:mb-6 prose-ul:leading-snug
+    prose-blockquote:mt-4 prose-blockquote:leading-snug
+    prose-hr:mt-6 prose-hr:border-t-2 prose-hr:border-solid prose-hr:border-slate-200
+    prose-figure:mt-4
+    prose-figcaption:mt-2 prose-figcaption:text-xs
+    prose-headings:mb-4
+    prose-table:mt-0
+    prose-th:mb-0
+    prose-img:my-0
+    prose-code:font-medium prose-code:bg-slate-100
+    max-w-none;
+}
+.viewer-markdown blockquote p:first-of-type:before,
+.viewer-markdown blockquote p:last-of-type:after {
+  @apply content-none;
+}
+
+/* Images */
+/* --------------------------------------------------------------- */
+
+
+/* Todo Lists */
+/* --------------------------------------------------------------- */
+
+.contains-task-list {
+  @apply pl-6 list-none;
+}
+.contains-task-list input[type="checkbox"] {
+  @apply appearance-none h-4 w-4 rounded border border-slate-200 relative mr-[0.3rem] ml-[-1.5rem] top-[0.15rem];
+}
+.contains-task-list input[type="checkbox"]:checked {
+  @apply border-indigo-600 bg-indigo-600 bg-no-repeat bg-contain;
+  background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
+}
+
+/* Markdown TOC */
+/* --------------------------------------------------------------- */
+
+.viewer-markdown .toc      { @apply mt-4; }
+.viewer-markdown h1 + .toc { @apply mt-8; }
+
+.viewer-markdown .toc h1,
+.viewer-markdown .toc h2,
+.viewer-markdown .toc h3,
+.viewer-markdown .toc h4,
+.viewer-markdown .toc h5,
+.viewer-markdown .toc h6 {
+  @apply text-base text-indigo-600 font-sans my-0;
+}
+.viewer-markdown .toc a {
+  @apply text-indigo-600 font-normal no-underline hover:underline;
+}
+.viewer-markdown .toc li    { @apply m-0; }
+.viewer-markdown .toc ul ul { @apply pl-4; }
+
+/* Notebook Spacing */
+/* --------------------------------------------------------------- */
+
+.viewer-notebook { @apply py-16; }
+#clerk-static-app .viewer-notebook { @apply pt-[0.8rem] pb-16; }
+.viewer-markdown *:first-child:not(.viewer-code):not(li):not(h2) { @apply mt-0; }
+/*.viewer + .viewer { @apply mt-6; }*/
+.viewer + .viewer-result { @apply mt-0; }
+.viewer-code + .viewer-result { @apply mt-3; }
+.viewer-markdown + .viewer-markdown { @apply mt-0; }
+
+/* Sidenotes */
+/* --------------------------------------------------------------- */
+
+.sidenote-ref {
+  @apply top-[-3px] inline-flex justify-center items-center w-[18px] h-[18px]
+    rounded-full bg-slate-100 border border-slate-300 hover:bg-slate-200 hover:border-slate-300
+    m-0 ml-[4px] cursor-pointer;
+}
+.sidenote {
+  @apply hidden float-left clear-both mx-[2.5%] my-4 text-xs relative w-[95%];
+}
+.sidenote-ref.expanded + .sidenote {
+  @apply block;
+}
+@media (min-width: 860px) {
+  .sidenote-ref {
+    @apply top-[-0.5em] w-auto h-auto inline border-0 bg-transparent m-0 pointer-events-none;
+  }
+  .sidenote sup { @apply inline; }
+  .viewer-markdown .contains-sidenotes p { @apply max-w-[65%]; }
+  .viewer-markdown p .sidenote {
+    @apply mr-[-54%] mt-[0.2rem] w-1/2 float-right clear-right relative block;
+  }
+}
+.viewer-code + .viewer:not(.viewer-markdown):not(.viewer-code):not(.viewer-code-folded),
+.viewer-code-folded + .viewer:not(.viewer-markdown):not(.viewer-code):not(.viewer-code-folded),
+.viewer-result + .viewer-result {
+  @apply mt-2;
+}
+.viewer-code + .viewer-code-folded {
+  @apply mt-4;
+}
+.viewer-result {
+  @apply leading-tight mb-6;
+}
+.viewer-result figure {
+  @apply mt-0 !important;
+}
+@media (min-width: 768px) {
+  .devcard-desc > div {
+    @apply max-w-full m-0;
+  }
+}
+
+/* Command Palette */
+/* --------------------------------------------------------------- */
+
+.nj-commands-input {
+  @apply bg-transparent text-white;
+}
+.nj-context-menu-item:hover:not([disabled]) {
+  @apply cursor-pointer;
+  background-color: rgba(255,255,255,.14);
+}
+
+/* Devdocs */
+/* --------------------------------------------------------------- */
+
+.logo, .logo-white {
+  @apply block indent-[-999em];
+  background: url(/images/nextjournal-logo.svg) center center no-repeat;
+}
+.devdocs-body {
+  @apply font-inter;
+}
+
+/* Workarounds */
+/* --------------------------------------------------------------- */
+
+/* Fixes vega viewer resizing into infinity */
+.vega-embed .chart-wrapper { @apply h-auto !important; }
+/* fixes fraction separators being overridden by tw’s border-color */
+.katex * { @apply border-black; }
+</style><script src="https://storage.googleapis.com/nextjournal-cas-eu/assets/28ktYzexRpt9ZsXvxpxDRnu497pkEeZjEvXB1NMVzfEoPEgsbQXEyM3j5CEucNccte6QGnX1qQxHL2KHfoBRG2FN-viewer.js" type="text/javascript"></script><link href="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.css" rel="stylesheet" type="text/css"><link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&amp;family=Fira+Mono:wght@400;700&amp;family=Fira+Sans+Condensed:ital,wght@0,700;1,700&amp;family=Fira+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&amp;family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&amp;display=swap" rel="stylesheet" type="text/css"></head><body><div id="clerk-static-app"></div><script>let viewer = nextjournal.clerk.sci_viewer
+let app = nextjournal.clerk.static_app
+let opts = viewer.read_string("{:out-path \"docs\", :bundle? false, :browse? false, :report-fn #object[nextjournal.clerk.builder$build_ui_reporter 0x3772a2e9 \"nextjournal.clerk.builder$build_ui_reporter@3772a2e9\"], :paths [\"notebooks/report.md\" \"notebooks/rendabilidade.clj\"], :path->doc {\"notebooks/report.md\" {:nextjournal/viewer {:name :clerk/notebook, :render-fn #viewer-fn v/notebook-viewer}, :nextjournal/value {:blocks [{:nextjournal/viewer {:name :html-, :render-fn #viewer-fn v/html}, :nextjournal/value [:div.viewer-markdown [\"h1\" {:id \"Eucalipto\"} [:span \"Eucalipto\"]] [\"h2\" {:id \"Introdu%C3%A7%C3%A3o%20e%20notas%20soltas\"} [:span \"Introdução e notas soltas\"]] [:p [:span \"Na última década os preços de madeira para polpa (MP) diminuíram aprox. 20%, em parte devido ao rápido aumento das zonas\"] [#viewer-eval v/inspect-presented {:nextjournal/viewer {:name :html, :render-fn #viewer-fn v/html}, :nextjournal/value [:span \" \"]}] [:span \"de plantações para produção de MD em países como a Austrália, Chile e Uruguai.\"]] [:p [:span \"A procura mundial de madeira, distribui-se por necessidades energéticas, lenha e carvão vegetal (mais de metade), madeira\"] [#viewer-eval v/inspect-presented {:nextjournal/viewer {:name :html, :render-fn #viewer-fn v/html}, :nextjournal/value [:span \" \"]}] [:span \"de serração, postes e vigas de construção (20%) e a dedicada à indústria da celulose e papel (27%).\"]] [:p [:em [:span \"Eucalyptus globulus\"]] [:span \" é uma das espécies do género \"] [:em [:span \"Eucalyptus\"]] [:span \" mais conhecidas no mundo. É a espécie representativa do\"] [#viewer-eval v/inspect-presented {:nextjournal/viewer {:name :html, :render-fn #viewer-fn v/html}, :nextjournal/value [:span \" \"]}] [:span \"género em países como EUA, Espanha, Portugal, etc.\"]] [:p [:span \"Em Portugal, quase 15% das terras estão platadas com esta espécie. A maioria dos eucaliptais encontra-se em solos\"] [#viewer-eval v/inspect-presented {:nextjournal/viewer {:name :html, :render-fn #viewer-fn v/html}, :nextjournal/value [:span \" \"]}] [:span \"provenientes de arenito ou calcário, gravemente degradados pelo cultivo desde há muitos séculos. Os melhores rendimentos\"] [#viewer-eval v/inspect-presented {:nextjournal/viewer {:name :html, :render-fn #viewer-fn v/html}, :nextjournal/value [:span \" \"]}] [:span \"tiram-se de margas argilosas ou argilas finas.\"]] [:p [:span \"A espécie desenvolve-se sobre um amplo conjunto de substractos, mas especialmente em solos derivados de rocha granítica\"] [#viewer-eval v/inspect-presented {:nextjournal/viewer {:name :html, :render-fn #viewer-fn v/html}, :nextjournal/value [:span \" \"]}] [:span \"e granodiorítica. Não suporta solos calcários que apresentem pH alto (>7,5) e cálcio livre, e toleram medianamente a\"] [#viewer-eval v/inspect-presented {:nextjournal/viewer {:name :html, :render-fn #viewer-fn v/html}, :nextjournal/value [:span \" \"]}] [:span \"salinidade.\"]] [:p [:span \"A maioria das empresas florestais têm estabelecido plantações com rotações curtas (entre 7 e 12 anos), não requerendo\"] [#viewer-eval v/inspect-presented {:nextjournal/viewer {:name :html, :render-fn #viewer-fn v/html}, :nextjournal/value [:span \" \"]}] [:span \"esquemas de tratamento que incluam podas ou \"] [:em [:span \"thinning\"]] [:span \".\"]] [:p [:span \"Table: Esquema de tratamento para MP com \"] [:em [:span \"E. globolus\"]] [:span \" no Chile\"]] [:table [:thead [:tr [:th {:style nil} [:span \"Altura estimada (m)\"]] [:th {:style nil} [:span \"Idade estimada (anos)\"]] [:th {:style nil} [:span \"Densidade (árv/ha)\"]] [:th {:style nil} [:span \"Árvores a extrair árv/ha\"]] [:th {:style nil} [:span \"Actividade\"]] [:th {:style nil} [:span \"Especificação\"]]]] [:tbody [:tr [:td {:style nil}] [:td {:style nil} [:span \"0\"]] [:td {:style nil} [:span \"1250 a 1600\"]] [:td {:style nil}] [:td {:style nil} [:span \"estabelecimento\"]] [:td {:style nil} [:span \"Consideram-se todas as actividades de estabelecimento\"]]] [:tr [:td {:style nil}] [:td {:style nil} [:span \"1 a 2\"]] [:td {:style nil}] [:td {:style nil}] [:td {:style nil} [:span \"controle de daninhas - plantação e fertilização\"]] [:td {:style nil} [:span \"Minimizar interferências de daninhas herbáceas e arbustivas: fertilizar o estabelecimento e pós-plantação dependerá de cada caso\"]]] [:tr [:td {:style nil} [:span \"até 2 ou 3\"]] [:td {:style nil} [:span \"2 a 3\"]] [:td {:style nil}] [:td {:style nil}] [:td {:style nil} [:span \"correcção fustal\"]] [:td {:style nil} [:span \"Avaliar níveis e danos por ventos e geadas\"]]] [:tr [:td {:style nil} [:span \"30 a 35\"]] [:td {:style nil} [:span \"12 a 14\"]] [:td {:style nil}] [:td {:style nil} [:span \"1150 a 1450\"]] [:td {:style nil} [:span \"colheita\"]] [:td {:style nil} [:span \"Colhe-se a totalidade das árvores, deixando os dejectos ordenados em curva de nível. Posteriormente deve avaliar-se se se aproveitam os rebentos ou se planta de novo\"]]]]] [:p [:span \"A \"] [:em [:span \"E. globolus\"]] [:span \" pode produzir troncos de alto valor para a produção de madeira serrada, parquets e outros produtos de\"] [#viewer-eval v/inspect-presented {:nextjournal/viewer {:name :html, :render-fn #viewer-fn v/html}, :nextjournal/value [:span \" \"]}] [:span \"maior valor para a a utilização na indústria do móvel.\"]] [:p [:span \"Os troncos classificam-se, segundo o uso principal e diâmetro, em \"] [:em [:span \"grossos ou delgados\"]] [:span \". A madeira grossa destina-se\"] [#viewer-eval v/inspect-presented {:nextjournal/viewer {:name :html, :render-fn #viewer-fn v/html}, :nextjournal/value [:span \" \"]}] [:span \"principalmente para o fabrico de móveis. O valor unitário desta madeira é sempre superior ao da madeira delgada.\"] [#viewer-eval v/inspect-presented {:nextjournal/viewer {:name :html, :render-fn #viewer-fn v/html}, :nextjournal/value [:span \" \"]}] [:span \"Quanto maior o diâmetro e a qualidade, melhor o preço.\"]] [:p [:span \"A madeira delgada, também chamada \"] [:em [:span \"polpável\"]] [:span \", provém principalmente dos \"] [:em [:span \"thinnings\"]] [:span \" comerciais, da colheita de plantações\"] [#viewer-eval v/inspect-presented {:nextjournal/viewer {:name :html, :render-fn #viewer-fn v/html}, :nextjournal/value [:span \" \"]}] [:span \"jóvens de rápido crescimento, de bosques sem tratamentos e da parte superior das árvores provenientes de colheitas em\"] [#viewer-eval v/inspect-presented {:nextjournal/viewer {:name :html, :render-fn #viewer-fn v/html}, :nextjournal/value [:span \" \"]}] [:span \"bosques maiores. O seu consumo maioritário destina-se à produção de celulose (fábricas locais de celulose, pastilhas ou\"] [#viewer-eval v/inspect-presented {:nextjournal/viewer {:name :html, :render-fn #viewer-fn v/html}, :nextjournal/value [:span \" \"]}] [:span \"chips, ou exportação). Pode empregar-se até quase 100% do volume de um bosque para este propósito.\"]] [:p [:span \"As plantações para polpa têm tipicamente um tratamento simples, regimes de baixa intensidade e colheitas entre os 8 e os\"] [#viewer-eval v/inspect-presented {:nextjournal/viewer {:name :html, :render-fn #viewer-fn v/html}, :nextjournal/value [:span \" \"]}] [:span \"14 anos.\"]] [:p [:span \"A madeira grossa permite a obtenção de produtos com maior valor agregado e, como tal, são menos sensíveis às flutuações\"] [#viewer-eval v/inspect-presented {:nextjournal/viewer {:name :html, :render-fn #viewer-fn v/html}, :nextjournal/value [:span \" \"]}] [:span \"de preços que a madeira para polpa.\"]] [:p [:strong [:span \"Num estudo sobre a cadeia de abastecimento de madeira no Canadá determinou-se que o factor que mais influi sobre a\"] [#viewer-eval v/inspect-presented {:nextjournal/viewer {:name :html, :render-fn #viewer-fn v/html}, :nextjournal/value [:span \" \"]}] [:span \"rentabilidade das empresas florestais corresponde à acessibilidade, principalmente as deslocações por estradas.\"]]] [:p [:span \"A fertilização é altamente rentável em plantações florestais de rápido crescimento, já que o curto período de\"] [#viewer-eval v/inspect-presented {:nextjournal/viewer {:name :html, :render-fn #viewer-fn v/html}, :nextjournal/value [:span \" \"]}] [:span \"retorno do investimento compensa o custo alto dos fertilizantes.\"]] [:p [:span \"Nos climas mediterrâneos, a água é o factor mais importante que controla a produtividade dos eucaliptos, e as secas são\"] [#viewer-eval v/inspect-presented {:nextjournal/viewer {:name :html, :render-fn #viewer-fn v/html}, :nextjournal/value [:span \" \"]}] [:span \"um importante factor de limitação do crescimento destas espécies.\"]] [:p [:span \"Em sítios de baixa produtividade recomenda-se um espaçamento inicial de 4 x 2,5 m, densidades da ordem das 1000 árv./ha\"]] [:p [:span \"Em sítios de alta produtividade, aconselha-se um espaçamento inical de 3 x 2 m, densidades de 1600 árv./ha\"]] [:p [:span \"Em Portugal, plantam-se 1300 árv./ha (4 x 1,9m) de \"] [:em [:span \"E. globolus\"]] [:span \" nas zonas mais secas ao sul, e ao norte 1600 árv./ha (3\"] [#viewer-eval v/inspect-presented {:nextjournal/viewer {:name :html, :render-fn #viewer-fn v/html}, :nextjournal/value [:span \" \"]}] [:span \"x 2m)\"]] [:p [:span \"A maioria dos estudos conclui que deve manter-se o controlo da vegetação competidora até ao cerramento das copas,\"] [#viewer-eval v/inspect-presented {:nextjournal/viewer {:name :html, :render-fn #viewer-fn v/html}, :nextjournal/value [:span \" \"]}] [:span \"que ocorre geralmente entre os 2 e os 4 anos.\"]] [:p [:span \"As plantações de rápido crescimento são fortemente condicionadas nas suas rotações curtas pela disponibilidade de\"] [#viewer-eval v/inspect-presented {:nextjournal/viewer {:name :html, :render-fn #viewer-fn v/html}, :nextjournal/value [:span \" \"]}] [:span \"nutrientes.\"]] [:p [:em [:span \"Lei de Mitscherlich: a cada incremento do factor limitador ou elemento nutritivo em menor quantidade, correspondem\"] [#viewer-eval v/inspect-presented {:nextjournal/viewer {:name :html, :render-fn #viewer-fn v/html}, :nextjournal/value [:span \" \"]}] [:span \"incrementos de rendimentos entre as colheitas decrescentes até se atingir o rendimento nulo.\"]]] [:p [:span \"Em Portugal provou-se que o tratamento com rega resultou em incrementos de biomassa de 91% e 85% aos 11 e 23 meses,\"] [#viewer-eval v/inspect-presented {:nextjournal/viewer {:name :html, :render-fn #viewer-fn v/html}, :nextjournal/value [:span \" \"]}] [:span \"respectivamente.\"]] [:p [:span \"Em Israel registaram-se rendimentos de 14,6 a 16 m^3^/ha/ano em platanções regadas.\"]] [:p [:span \"Estimam-se necessários 354 m^3^ de água para produzir 1 m^3^ de madeira.\"]] [\"h2\" {:id \"Indicadores%20de%20rentabilidade\"} [:span \"Indicadores de rentabilidade\"]] [\"h3\" {:id \"Net%20Present%20Value\"} [:a {:href \"https://www.investopedia.com/terms/n/npv.asp\"} [:span \"Net Present Value\"]]] [:blockquote [:p [:span \"Net present value (NPV) is the difference between the present value of cash inflows and the present value of cash outflows over a period of time. NPV is used in capital budgeting and investment planning to analyze the profitability of a projected investment or project. NPV is the result of calculations used to find the current value of a future stream of payments.\"]]] [#viewer-eval v/inspect-presented {:nextjournal/viewer {:name :nextjournal.markdown/block-formula, :render-fn #viewer-fn v/katex-viewer}, :nextjournal/value \" \\\\frac{ \\\\text{cash flow} }{(1 + i)^t} - \\\\text{initial investment} \"}] [\"h3\" {:id \"Land%20Expectation%20Value\"} [:span \"Land Expectation Value\"]] [:blockquote [:p [:span \"Land expectation value (LEV) is simply the value of a tract of land used for growing timber. It is the NPV of all revenues and costs associated with growing timber on the land in perpetuity (not just those associated with one “rotation of timber” or other time period). LEV is thus a special case of Discounted Cash Flow where a perpetual stream of revenues and costs are considered. LEV can be interpreted as the maximum price possible for a tract of timberland if a rate of return equal to the discount rate used to calculate LEV is expected.\"] [#viewer-eval v/inspect-presented {:nextjournal/viewer {:name :html, :render-fn #viewer-fn v/html}, :nextjournal/value [:span \" \"]}] [:span \" LEV represents the maximum amount that could be paid for a tract of land and still earn the required interest rate.\"]]] [#viewer-eval v/inspect-presented {:nextjournal/viewer {:name :nextjournal.markdown/block-formula, :render-fn #viewer-fn v/katex-viewer}, :nextjournal/value \" \\\\frac{ \\\\sum_{year=0}^{t} (revenue_{year} - costs_{year}) \\\\times (1 + rate)^{t - year} }{(1 + rate)^t - 1} \"}] [\"h3\" {:id \"Internal%20Rate%20of%20Return\"} [:a {:href \"https://www.investopedia.com/terms/i/irr.asp\"} [:span \"Internal Rate of Return\"]]] [:blockquote [:p [:span \"The internal rate of return (IRR) is a metric used in financial analysis to estimate the profitability of potential investments. IRR is a discount rate that makes the net present value (NPV) of all cash flows equal to zero in a discounted cash flow analysis.\"]]] [\"h3\" {:id \"Cen%C3%A1rio\"} [:span \"Cenário\"]] [:p [:span \"Para o Chile, valores em USD/ha (1 ha = 10 000 m^2^).\"]] [:table [:thead [:tr [:th {:style nil} [:span \"fluxo/ano\"]] [:th {:style nil} [:span \"0\"]] [:th {:style nil} [:span \"1\"]] [:th {:style nil} [:span \"2\"]] [:th {:style nil} [:span \"3\"]] [:th {:style nil} [:span \"4\"]] [:th {:style nil} [:span \"5\"]] [:th {:style nil} [:span \"6\"]] [:th {:style nil} [:span \"7\"]] [:th {:style nil} [:span \"8\"]] [:th {:style nil} [:span \"9\"]] [:th {:style nil} [:span \"10\"]]]] [:tbody [:tr [:td {:style nil} [:strong [:span \"receitas\"]]] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}]] [:tr [:td {:style nil} [:span \"venda da madeira\"]] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil} [:span \"13 593\"]]] [:tr [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}]] [:tr [:td {:style nil} [:strong [:span \"despesas\"]]] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}]] [:tr [:td {:style nil} [:span \"preparação terreno\"]] [:td {:style nil} [:span \"-170\"]] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}]] [:tr [:td {:style nil} [:span \"controlo daninhas\"]] [:td {:style nil} [:span \"-84\"]] [:td {:style nil} [:span \"-267\"]] [:td {:style nil} [:span \"-46\"]] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}]] [:tr [:td {:style nil} [:span \"estabelecimento\"]] [:td {:style nil} [:span \"-171\"]] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}]] [:tr [:td {:style nil} [:span \"fertilização\"]] [:td {:style nil} [:span \"-146\"]] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}]] [:tr [:td {:style nil} [:span \"colheita\"]] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil} [:span \"-7 263\"]]] [:tr [:td {:style nil} [:span \"adminstração\"]] [:td {:style nil}] [:td {:style nil} [:span \"-30\"]] [:td {:style nil} [:span \"-30\"]] [:td {:style nil} [:span \"-30\"]] [:td {:style nil} [:span \"-30\"]] [:td {:style nil} [:span \"-30\"]] [:td {:style nil} [:span \"-30\"]] [:td {:style nil} [:span \"-30\"]] [:td {:style nil} [:span \"-30\"]] [:td {:style nil} [:span \"-30\"]] [:td {:style nil} [:span \"-30\"]]] [:tr [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}]] [:tr [:td {:style nil} [:em [:span \"saldo bruto\"]]] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil} [:span \"6 300\"]]] [:tr [:td {:style nil} [:em [:span \"imposto 17%\"]]] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil} [:span \"-1 071\"]]] [:tr [:td {:style nil} [:em [:span \"saldo líquido\"]]] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil} [:span \"5 229\"]]] [:tr [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}]] [:tr [:td {:style nil} [:strong [:span \"investimento\"]]] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}]] [:tr [:td {:style nil} [:span \"terreno\"]] [:td {:style nil} [:span \"-1 500\"]] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}]] [:tr [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}]] [:tr [:td {:style nil} [:strong [:span \"valor residual\"]]] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil} [:span \"1 500\"]]] [:tr [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}] [:td {:style nil}]] [:tr [:td {:style nil} [:span \"fluxo projecto\"]] [:td {:style nil} [:span \"-2072\"]] [:td {:style nil} [:span \"-389\"]] [:td {:style nil} [:span \"-76\"]] [:td {:style nil} [:span \"-30\"]] [:td {:style nil} [:span \"-30\"]] [:td {:style nil} [:span \"-30\"]] [:td {:style nil} [:span \"-30\"]] [:td {:style nil} [:span \"-30\"]] [:td {:style nil} [:span \"-30\"]] [:td {:style nil} [:span \"-30\"]] [:td {:style nil} [:span \"6 729\"]]]]] [:table [:thead [:tr [:th {:style nil} [:span \"discount rate\"]] [:th {:style nil} [:span \"8.7%\"]]]] [:tbody [:tr [:td {:style nil} [:span \"NPV (USD/ha)\"]] [:td {:style nil} [:span \"301\"]]] [:tr [:td {:style nil} [:span \"IRR (%)\"]] [:td {:style nil} [:span \"9.94%\"]]] [:tr [:td {:style nil} [:span \"LEV (USD/ha)\"]] [:td {:style nil} [:span \"533\"]]]]] [:p [:span \"Evidentemente, este cenário é de aplicação limitada quanto a nós. Mas serve para dar ideia das componentes e fases do\"] [#viewer-eval v/inspect-presented {:nextjournal/viewer {:name :html, :render-fn #viewer-fn v/html}, :nextjournal/value [:span \" \"]}] [:span \"projecto e dos valores relativos.\"]] [:p [:span \"Para prosseguir, é necessário levantar esta informação para o mercado português.\"]] [\"h2\" {:id \"Portugal\"} [:span \"Portugal\"]] [\"h3\" {:id \"Custos\"} [:span \"Custos\"]] [\"h4\" {:id \"Rearboriza%C3%A7%C3%A3o\"} [:span \"Rearborização\"]] [:ul [:li [:<> [:span \"Preparação do terreno à cava (ilegal, mas muito utilizado no minifúndio): 1 600€ a 2 100€/hectare\"]]] [:li [:<> [:span \"Destroça cepos com Enxó + ripagem (2D) + gradagem + subsolagem (na linha da plantação): 1 200€ a 1 500€/hectare\"]]] [:li [:<> [:span \"Arranque dos cepos + ripagem e gradagem em simultâneo na faixa de plantação: 1 000 a 1 300 €/hectare\"]]]] [\"h3\" {:id \"Arrendamento%20%C3%A0%20Navigator\"} [:span \"Arrendamento à Navigator\"]] [:p [:span \"Como funcionam os contratos de arrendamento com a Navigator?\"]] [:blockquote [:p [:span \"O processo é feito através de um contacto com o proprietário – ou este vem ter com um dos nossos técnicos – com a proposta da Companhia fazer toda a gestão da propriedade durante o período do contrato ou nós vamos ao seu encontro na fase de procura de novas oportunidades. Esta gestão inclui todas as operações necessárias, como a plantação com as melhores plantas, adubação, seleção de varas, controlo da vegetação, gradagens, proteção de incêndios, etc. Os contratos têm a duração variável de 12 a 25 anos, mas, normalmente, vão da plantação até ao segundo corte. Podem ser também realizados com plantações a meio do ciclo, com povoamentos com mais de 6 anos por exemplo, a que depois daremos seguimento à gestão daquele corte e futuros. Susana Paulo Pereira é a responsável da Navigator pela compra e arrendamento de terras em Portugal\"]]] [:p [:span \"Qual a oferta de renda para os proprietários?\"]] [:blockquote [:p [:span \"A renda pode ser fixa, pagando-se todos os anos uma quantia cujo valor acompanha o aumento da taxa de inflação. O valor desta renda é apurado após uma avaliação ao potencial do terreno em causa – quanto melhor, maior será a renda. A renda também pode ser variável e paga no momento de cada corte. Nestes casos, o valor é calculado pelo volume de madeira que vai para a fábrica, retirando os custos com corte, rechega e transporte, multiplicado pela percentagem acordada e pelo valor da madeira em pé nesse momento.\"]]] [:p [:span \"Que terrenos são elegíveis?\"]] [:blockquote [:p [:span \"Em virtude da legislação atual, só arrendamos terrenos que tenham eucalipto. Falamos de propriedades com 5 hectares, mas que não têm de ser contínuos. Também arrendamos propriedades inferiores a 5 hectares, desde que estejam junto a outras que estamos a gerir. Trata-se de uma mais-valia, pois permite-nos fazer uma exploração florestal em escala.\"]]] [:p [:span \"Que benefícios podem esperar os proprietários?\"]] [:blockquote [:p [:span \"Os proprietários não têm de se preocupar com nada. Fazemos a gestão da área que ficar no contrato e se houver algum auto por parte da GNR em termos de gestão de combustíveis, vulgarmente indicado como a limpeza das florestas, somos nós que avaliamos a situação e responderemos por ela. Fazemos toda a gestão, desde o licenciamento quando é necessário replantar, e asseguramos a vigilância e combate aos incêndios através de um dispositivo próprio e profissional, que é partilhado com a Altri – a Afocelca. Para além do desenvolvimento produtivo da floresta, a nossa gestão implica também a construção de caminhos e aceiros, que são benfeitorias que ficarão nas propriedades depois do final do contrato.\"]]]]}], :toc {:type :toc, :children [{:type :toc, :content [{:type :text, :text \"Eucalipto\"}], :heading-level 1, :path [:content 0], :children [{:type :toc, :content [{:type :text, :text \"Introdução e notas soltas\"}], :heading-level 2, :path [:content 1]} {:type :toc, :content [{:type :text, :text \"Indicadores de rentabilidade\"}], :heading-level 2, :path [:content 27], :children [{:type :toc, :content [{:type :link, :content [{:type :text, :text \"Net Present Value\"}], :attrs {:href \"https://www.investopedia.com/terms/n/npv.asp\"}}], :heading-level 3, :path [:content 28]}]}]}]}, :title \"Eucalipto\"}, :path [], :nextjournal/expanded-at {[] false}}}, :path->url {\"notebooks/report.md\" \"notebooks/report.html\", \"notebooks/rendabilidade.clj\" \"notebooks/rendabilidade.html\"}, :current-path \"notebooks/report.md\"}")
+app.init(opts)
+</script></body></html>

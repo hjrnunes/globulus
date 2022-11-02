@@ -18,14 +18,14 @@
                 ))))
 
 ; or let Clerk watch the given `:paths` for changes
-(clerk/serve! {:watch-paths    ["src"]
-               :show-filter-fn (fn [path]
-                                 (println path)
-                                 (clojure.string/starts-with? path "src/globulus/notebooks"))})
-
-
-(clerk/show! "src/globulus/notebooks/report.md")
+(clerk/serve! {:watch-paths ["notebooks"]})
 
 ;(do
 ;  (def user/portal ((requiring-resolve 'portal.api/open) {:launcher :intellij}))
 ;  (add-tap (requiring-resolve 'portal.api/submit)))
+
+(comment
+  (clerk/build! {:paths    ["notebooks/report.md"
+                            "notebooks/rendabilidade.clj"]
+                 :out-path "docs"
+                 :bundle   false}))
