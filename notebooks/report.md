@@ -137,7 +137,7 @@ Para o Chile, valores em USD/ha (1 ha = 10 000 m^2^).
 Evidentemente, este cenário é de aplicação limitada quanto a nós. Mas serve para dar ideia das componentes e fases do
 projecto e dos valores relativos.
 
-Para prosseguir, é necessário levantar esta informação para o mercado português.
+Para prosseguir, é necessário levantar esta informação para o mercado português. 
 
 ## Portugal
 

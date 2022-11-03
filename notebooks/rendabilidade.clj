@@ -7,57 +7,8 @@
             [babashka.fs :as fs]
             [clojure.edn :as edn]))
 
-;; # Estudo de rendibilidade
-;; Estudo dos indicadores de rendibilidade para uma plantação de *E. Globolus*.
 
-;; ## Introdução
-
-;; As plantações de *E. Globolus* caracterizam-se por duas fases: a plantação propriamente dita, quer de pés de árvore em covas ou por sementeira;
-;; e a *talhadia*, que consiste em aproveitar e seleccionar os rebentos que brotam das toiças (cepos) dos eucaliptos abatidos (é uma das grandes vantagens dos eucaliptos).
-;;
-;; A cada fase de plantação/talhadia até ao corte chama-se rotação. Há sempre uma primeira rotação de plantio e zero, uma ou várias de talhadia.
-;; Pelo que tenho visto, o mais comum é uma, ou duas no máximo, de talhadia. Duas ou três rotações, portanto, de 10 anos cada.
-;;
-;; ### Modelo
-;;
-;; A fonte principal dos dados é um [simulador/modelo empírico](https://www.isa.ulisboa.pt/cef/forchange/fctools/pt/PlataformasIMfLOR_/Povoamento/GLOBULUS)
-;; de crescimento do *E. Globulus* feito especificamente para Portugal.
-;; Daquilo que vi, é bastante fiável. Saber se os parâmetros que lá meti fazem sentido já é outra coisa. Há um manual de instruções manhoso,
-;; que mal diz como se põe a correr. Seja como for, consegui, mas procurei não fugir muito aos exemplos.
-;;
-;; O modelo leva como *input*:
-;; - o horizonte de planeamento em anos
-;; - uma prescrição de operações, e o momento em que se executam, *e.g.* plantação, fertilização, limpeza do mato, etc.
-;; - uma matriz de custos das operações
-;; - uma caracterização da plantação *e.g.* densidade, etc.
-;; - dados climatéricos do local *e.g.* temperatura média, precipitação, etc.
-;; - índice de local, basicamente a altura máxima média atingida pelos eucaliptos naquele sítio
-;; - prescrição das rotações
-;; - preços de mercado da biomassa produzida
-;; - taxa de desconto para o cálculo da rendibilidade
-
-;; Como *output* produz o que se chama uma tabela de produção (yield table), que indica os parâmetros simulados para cada ano durante
-;; o horizonte de planeamento; os principais são os de biomassa, claro, mas vêm também custos da produção, receitas, Net Present Value, etc.
-
-;; Portanto, o que eu fiz foi escolher um sítio, tomando como exemplo aquele terreno em Alhadas que meti no canal, arranjei os dados climatéricos
-;; mais próximos e específicos que consegui, e gerei combinações dos factores-chave que podem variar e corri o modelo para cada combinação.
-;; Ao *output* do modelo acrescentei apenas o cálculo do Land Expectation Value que é o indicador clássico para projectos florestais.
-
-;; ### Factores-chave
-
-;; - **densidade**: quantas árvores por héctar; para Portugal, é sempre entre 1000 e 1600 pés, para zonas de mau e bom rendimento, respectivamente
-;; - **factor de talhadia (coppice)**: quantos rebentos se deixa crescer por toiça cortada, para a talhadia; entre 1 e 3
-;; - **taxa de desconto**: taxa abaixo da qual o investimento não é compensatório (por, por exemplo, se poder obter uma taxa melhor em depósitos a prazo, acções, etc.)
-;; - **preço da madeira polpável**: a quanto contamos vender a mercadoria, em euros por metro cúbico; o valor mais actual que encontrei foi €30
-
-;; ### Dados gerais
-
-(clerk/table {:rows (-> [["Local" "Alhadas, Figueira da Foz"]
-                         ["Horizonte de planeamento" "20 anos (1 rotação de plantio + 1 rotação de talhadia)"]
-                         ["Custo recorrente anual (e.g. de manutenção, etc.)" "€30"]])})
-
-
-^{:nextjournal.clerk/visibility {:result :hide}}
+^{:nextjournal.clerk/visibility {:result :hide :code :hide}}
 (def titles {"Ndead"      "Number of dead trees per hectare (ha-1)"
              "N_ing"      "Number of ingrowth trees per hectare (ha-1)"
              "Fw"         "Wilson factor – relative stand density measure (varies from 0.2 up to 0.4)"
@@ -99,15 +50,15 @@
              "NPVsum"     "Sum of the net present value (€)"
              "EEA"        "? (€)"})
 
-^{:nextjournal.clerk/visibility {:result :hide}}
+^{:nextjournal.clerk/visibility {:result :hide :code :hide}}
 (def runs-dir "/Users/hjrnunes/workspace/hjrnunes/globulus/tmp/runs")
 
-^{:nextjournal.clerk/visibility {:result :hide}}
+^{:nextjournal.clerk/visibility {:result :hide :code :hide}}
 (def runs (->> (fs/list-dir runs-dir)
                (mapv (comp str (partial fs/relativize runs-dir)))
                (remove #{".DS_Store"})))
 
-^{:nextjournal.clerk/visibility {:result :hide}}
+^{:nextjournal.clerk/visibility {:result :hide :code :hide}}
 (defn load-run [runs-dir run]
   (let [run-dir (fs/path runs-dir run)
         params-file (fs/path run-dir "params.edn")
@@ -121,9 +72,13 @@
                       (str)
                       (tc/dataset))}))
 
-^{:nextjournal.clerk/visibility {:result :hide}}
-(def run-yields (->> runs
-                     (mapv (partial load-run runs-dir))
+^{:nextjournal.clerk/visibility {:result :hide :code :hide}}
+(def loaded-runs (->> runs
+                      (mapv (partial load-run runs-dir))))
+
+
+^{:nextjournal.clerk/visibility {:result :hide :code :hide}}
+(def run-yields (->> loaded-runs
                      (mapv (fn [{:keys [params yield-table]}]
                              (let [{:keys [rate site plan-years pulpwood-price density coppice-factor]} params]
                                (-> yield-table
@@ -136,11 +91,11 @@
                                    (g/land-expectation-value plan-years (/ rate 100) {:cost-col    "PC_tot"
                                                                                       :revenue-col "R_wood"
                                                                                       :t-col       :t})))))))
-^{:nextjournal.clerk/visibility {:result :hide}}
+^{:nextjournal.clerk/visibility {:result :hide :code :hide}}
 (def yield-table-ds (->> run-yields
                          (apply tc/concat)))
 
-^{:nextjournal.clerk/visibility {:result :hide}}
+^{:nextjournal.clerk/visibility {:result :hide :code :hide}}
 (def summary-ds (->> run-yields
                      (mapv (fn [run-ds]
                              (let [[cost-in cost-out cost-lab rev-wood]
@@ -178,17 +133,95 @@
                      (apply tc/concat)))
 
 
-^{:nextjournal.clerk/visibility {:result :hide}}
+^{:nextjournal.clerk/visibility {:result :hide :code :hide}}
 (def summary (-> summary-ds
                  (tc/rows :as-maps)
                  (vec)))
 
+;; # Estudo de rendibilidade
+;; Estudo dos indicadores de rendibilidade para uma plantação de *E. Globolus*.
+
+;; ## I. Introdução
+
+;; As plantações de *E. Globolus* caracterizam-se por duas fases: a plantação propriamente dita dos pés em covas;
+;; e a *talhadia*, que consiste em aproveitar e seleccionar os rebentos que brotam das toiças (cepos) dos eucaliptos abatidos (é uma das grandes vantagens dos eucaliptos).
+;;
+;; A cada fase de plantação/talhadia até ao corte chama-se rotação. Há sempre uma primeira rotação de plantio e zero, uma ou várias de talhadia.
+;; Pelo que tenho visto, o mais comum é uma, ou duas no máximo, de talhadia. Duas ou três rotações, portanto, de 10 anos cada.
+;;
+;; ### Modelo
+;;
+;; A fonte principal dos dados é um [simulador/modelo empírico](https://www.isa.ulisboa.pt/cef/forchange/fctools/pt/PlataformasIMfLOR_/Povoamento/GLOBULUS)
+;; de crescimento do *E. Globulus* feito especificamente para Portugal.
+;; Daquilo que vi, é bastante fiável. Já se os parâmetros que usados fazem sentido, é outra coisa... Há um manual de instruções manhoso,
+;; que mal diz como se põe a correr. Seja como for, consegui, mas procurei não fugir muito aos exemplos.
+;;
+;; O modelo leva como *input*:
+;; - o horizonte de planeamento em anos
+;; - uma prescrição de operações, e o momento em que se executam, *e.g.* plantação, fertilização, limpeza do mato, etc.
+;; - uma matriz de custos das operações
+;; - uma caracterização da plantação *e.g.* densidade, etc.
+;; - dados climatéricos do local *e.g.* temperatura média, precipitação, etc.
+;; - índice de local - um indicador de rendimento do local relacionado com a altura das árvores
+;; - prescrição das rotações
+;; - preços de mercado da biomassa produzida
+;; - taxa de desconto para o cálculo da rendibilidade
+
+;; Como *output* produz o que se chama uma tabela de produção (yield table), que indica os parâmetros simulados para cada ano durante
+;; o horizonte de planeamento; os principais são os de biomassa, claro, mas vêm também custos da produção, receitas, Net Present Value, etc.
+
+;; Portanto, o que eu fiz foi escolher um sítio, tomando como exemplo aquele terreno em Alhadas que meti no canal, arranjei os dados climatéricos
+;; mais próximos e específicos que consegui, e gerei combinações dos factores-chave que podem variar e corri o modelo para cada combinação.
+;; Ao *output* do modelo acrescentei apenas o cálculo do Land Expectation Value que é um indicador comum para investimentos em silvicultura.
+
+;; ### Factores-chave
+
+;; - **densidade**: quantas árvores por héctar; para Portugal, é sempre entre 1000 e 1600 pés, para zonas de mau e bom rendimento, respectivamente
+;; - **factor de talhadia (coppice)**: quantos rebentos se deixa crescer por toiça cortada, para a talhadia; entre 1 e 3
+;; - **taxa de desconto**: taxa abaixo da qual o investimento não é compensatório (por, por exemplo, se poder obter uma taxa melhor em depósitos a prazo, acções, etc.)
+;; - **preço da madeira polpável**: a quanto contamos vender a mercadoria, em euros por metro cúbico; o valor mais actual que encontrei foi €30 (para madeira em pé)
+
+;; ### Indicadores de rentabilidade
+
+;; #### [Net Present Value](https://www.investopedia.com/terms/n/npv.asp)
+
+;; > Net present value (NPV) is the difference between the present value of cash inflows and the present value of cash outflows over a period of time. NPV is used in capital budgeting and investment planning to analyze the profitability of a projected investment or project. NPV is the result of calculations used to find the current value of a future stream of payments.
+
+;; $$ \frac{ \text{cash flow} }{(1 + i)^t} - \text{initial investment} $$
+
+;; #### Land Expectation Value
+
+;; > Land expectation value (LEV) is simply the value of a tract of land used for growing timber. It is the NPV of all revenues and costs associated with growing timber on the land in perpetuity (not just those associated with one “rotation of timber” or other time period). LEV is thus a special case of Discounted Cash Flow where a perpetual stream of revenues and costs are considered. LEV can be interpreted as the maximum price possible for a tract of timberland if a rate of return equal to the discount rate used to calculate LEV is expected.
+;; > <br> LEV represents the maximum amount that could be paid for a tract of land and still earn the required interest rate.
+
+;; $$ \frac{ \sum_{year=0}^{t} (revenue_{year} - costs_{year}) \times (1 + rate)^{t - year} }{(1 + rate)^t - 1} $$
+
+;; ### Dados gerais
+
+(clerk/table {:rows (-> [["Local" "Alhadas, Figueira da Foz"]
+                         ["Horizonte de planeamento" "20 anos (1 rotação de plantio + 1 rotação de talhadia)"]
+                         ["Custo recorrente anual (e.g. de manutenção, etc.)" "€30"]])})
+
+;; ### Operações
+
+(clerk/table (-> (first loaded-runs)
+                 :params
+                 :fma-data
+                 first
+                 :ops
+                 (tc/dataset)
+                 (tc/drop-rows [0 1])
+                 (tc/select-columns [:r :t :desc])
+                 (tc/rename-columns {:t    "Ano"
+                                     :r    "Rotação"
+                                     :desc "Operação"})
+                 (tc/rows :as-maps)))
 
 
-;; ## Taxa de desconto vs. Preço da madeira
-;; Os preços da madeira usados aqui correspondem ao preço da madeira de pé, isto é, antes de ser colhida ou abatida, e com a casca.
+;; ## II. Taxa de desconto vs. Preço da madeira
+;; Os preços da madeira aqui usados correspondem ao preço da madeira em pé, ou seja, antes de ser colhida, ou abatida, e com a casca.
 
-;; Este preço é o mais baixo que se obtém, visto que a qualidade da madeira apenas pode melhorar, sendo a partir daí limpa e escolhida.
+;; Este preço é o mais baixo que se obtém, presumivelmente por daí em diante a qualidade da madeira apenas poder melhorar, vindo a ser limpa de casca e aparada.
 
 ;; Suspeito que o cálculo do simulador usa o volume de madeira já escolhida e limpa, ou seja, mais cara. Portanto, isto deverão ser estimativas por baixo.
 
@@ -243,22 +276,23 @@
 
 
 
-;; ## Factores da plantação vs. factores económicos
+;; ## III. Factores da plantação vs. factores económicos
 
 ;; Os dois factores de platanção mais importantes são:
 
 ;; - *Density*: Densidade das árvores, expressa em árvores por hectar
 ;; - *Coppice factor*: Número de varas que se deixa crescer em cada toiça (cepo) para a 2.ª rotação
 
-;; Contava com uma relação menos linear quanto à densidade. Maior densidade resulta em menos diâmetro basal (do tronco).
-;; Logo, poderia significar menos volume a partir de certo ponto. Não sei se é o simulador que não leva isso em conta ou se é mesmo assim.
+;; Contava com uma relação menos linear quanto à densidade. Supunha que maior densidade resultasse em menos diâmetro basal (do tronco).
+;; Logo, poderia dar-se o caso de o número de árvores não compensar o diâmetro perdido em termos de volume por área.
+;; Não sei se é o simulador que não leva isso em conta ou se é mesmo assim.
 
-;; Seja como for, é pelo menos útil para ter uma perspectiva para vários tipos de localização (solo, clima, etc):
+;; Seja como for, serve ao menos para ter uma perspectiva para vários tipos de local (solo, clima, etc):
 
-;; - de bom rendimento: densidade de 1300 a 1600, coppice de 1,5 a 3
-;; - de menor rendimento: densidade de 1000 a 1300, coppice de 1 a 1,5
+;; - de bom rendimento: densidade de 1300 a 1600, mais varas em talhadia
+;; - de menor rendimento: densidade de 1000 a 1300, menos varas em talhadia
 
-;; Neste local julgo que seria possível ir até aos parâmetros máximos. Mas noutros locais, se forem muito acidentados, por exemplo,
+;; Neste local julgo que seria possível ir até perto dos parâmetros máximos. Mas noutros locais, se forem muito acidentados, por exemplo, ou mais secos,
 ;; pode não ser.
 
 ^{::clerk/width :wide}
@@ -329,7 +363,10 @@
 
 
 
-;; ## Caso específico
+;; ## IV. Um caso específico
+
+;; #### Parâmetros
+
 (clerk/table {:rows (-> [["taxa" 4]
                          ["densidade" 1250]
                          ["factor talhadia" 1.5]
@@ -371,14 +408,14 @@
                                 :labelExpr "datum.label == 'PC_in' ? 'Dentro da cadeia de valor florestal' : datum.label == 'PC_out' ? 'Fora da cadeia de valor florestal' :datum.label == 'PC_lab' ? 'Mão de obra' : 'Video Game'"}}}})
 
 
-;; ### Cash flow
+;; ### Saldos
 
 ^{::clerk/width :wide}
 (clerk/vl
   {:$schema   "https://vega.github.io/schema/vega-lite/v5.json"
    :width     200
    :height    200
-   :title     "Cash flow (€ ha-1)"
+   :title     "Saldos (€ ha-1)"
    :data      {:values single-case-rows}
    :transform [{:aggregate [{:op "sum" :field "PC_tot" :as "Despesa"}
                             {:op "sum" :field "R_wood" :as "Receita"}]}
@@ -445,8 +482,16 @@
                              :title     nil}}}
              ]})
 
+;; ## V. Matriz de custos
+^{:nextjournal.clerk/visibility {:result :fold}}
+(clerk/table (-> (io/resource "simdata/costs_operations.csv")
+                 (str)
+                 (tc/dataset)
+                 (tc/drop-columns ["Class" "EN" "TYPE"])
+                 (tc/reorder-columns ["PT" "TIPO"])
+                 (tc/rows :as-maps)))
 
-;; ## Dados em bruto
+;; ## VI. Dados das simulações em bruto
 
 
 (clerk/md (str "Simulações: " (tc/row-count summary)))
